@@ -124,8 +124,8 @@ def fun_5():
     pp=r_pp[0:200]   
 #6. Запуск работы алгоритма (до 100 поколений)
 def fun_6(gen):
-    global array
-    array = []
+    global pp
+    pp = []
     fun_1()
     for k in range(0,gen):
         fun_2()
