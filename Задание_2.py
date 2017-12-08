@@ -63,6 +63,7 @@ def fun_1():
                         x=0
                         break
                 pp[i].append([x])
+
 #2.1 - выбор каждой особи пропорционально приспособленности (рулетка)
 def fun_2():
     S=0
@@ -78,17 +79,17 @@ def fun_2():
             s+=m_p[i][1][0]
             i+=1
         S-=m_p[i-1][1][0]
-        mama=m_p[i-1][0]
-        papa = m_p[i-1][0]
+        m=m_p[i-1][0]
+        p = m_p[i-1][0]
         m_p.remove(m_p[i - 1])
-        fun_3(mama, papa)
+        fun_3(m, p)
 #3.2 -  однородный (каждый бит от случайно выбранного родителя)
-def getX(child):
+def getX(c):
     x=0
     volume = 0
     weight = 0
-    for j in range(0, len(child)):
-        if child[j] == 1:
+    for j in range(0, len(c)):
+        if c[j] == 1:
             x += array[j][2]
             weight += array[j][0]
             volume += array[j][1]
@@ -96,26 +97,26 @@ def getX(child):
                 x = 0
                 break
     return x
-def fun_3(mama, papa):
-    chil=[]
-    for i in range(0,len(mama)):
+def fun_3(m, p):
+    c=[]
+    for i in range(0,len(m)):
         random.seed()
         individual = random.random()
         if (individual<0.5):
-            chil.append(mama[i])
+            c.append(m[i])
         else:
-            chil.append(papa[i])
-    baby=[]
-    baby.append(chil)
-    baby.append([getX(chil)])
-    newpp.append(baby)
+            c.append(p[i])
+    b=[]
+    b.append(c)
+    b.append([getX(c)])
+    newpp.append(b)
 #4.2 - случайное изменение 3х битов у 5% особей
 def fun_4():
-    chil = []
-    for i in range(0, int(len(chil) * 0.05)):
-        individual = random.randint(0, len(chil) - 1)
+    c = []
+    for i in range(0, int(len(c) * 0.05)):
+        individual = random.randint(0, len(c) - 1)
         rdn = random.randint(0, 29)
-        chil[individual][rdn] = chil[individual][rdn] ^ 1
+        c[individual][rdn] = c[individual][rdn] ^ 1
 #5 - Формирование новой популяции
 def fun_5():
     global pp
@@ -126,6 +127,10 @@ def fun_5():
 def fun_6(gen):
     global pp
     pp = []
+    global newpp
+    newpp = []
+    global array
+    array = []
     fun_1()
     for k in range(0,gen):
         fun_2()
@@ -134,4 +139,6 @@ def fun_6(gen):
     return pp[0]
 res = fun_6(100)
 print(res[1],res[0])
+
+
 
