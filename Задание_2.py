@@ -43,7 +43,7 @@ def fun_1():
                 v1+=array[j][1]
             else:
                 pp[i][0].append(0)
-        for k in range(0,len(pp[i][0])):
+        for k in range(0,len(pp[i][0])):#если выборка случайного в конце->добавляем из начала.
             if pp[i][0][k]==0:
                 if w1+array[k][0]<w0 and v1+array[k][1]<v0:
                     pp[i][0][k]=1
@@ -51,7 +51,8 @@ def fun_1():
                     v1 += array[k][1]
             else:
                 break
-    for i in range(0,len(pp)): #приспособленность
+def getY():#приспособленность
+    for i in range(0,len(pp)): 
         x = 0
         volume=0
         weight=0
@@ -75,16 +76,26 @@ def fun_2():
         random.seed()
         r = random.randint(0, round(S))#запускаем "рудетку" 
         s=0
-        while s<r and i<len(m_p):
+        while s<r and i<len(m_p): #Выбрать маму
             s+=m_p[i][1][0]
             i+=1
         S-=m_p[i-1][1][0]
         m=m_p[i-1][0]
+        m_p.remove(m_p[i - 1])
+        i = 0
+        random.seed()
+        r = random.randint(0, round(S))#запускаем "рудетку" 
+        s=0
+        while s<r and i<len(m_p):#Выбрать папу
+            s+=m_p[i][1][0]
+            i+=1
+        S-=m_p[i-1][1][0]
         p = m_p[i-1][0]
         m_p.remove(m_p[i - 1])
         fun_3(m, p)
+        
 #3.2 -  однородный (каждый бит от случайно выбранного родителя)
-def getX(c): #вспомогательная функция
+def getX(c):#приспособленность (число )
     x=0
     volume = 0
     weight = 0
@@ -97,11 +108,11 @@ def getX(c): #вспомогательная функция
                 x = 0
                 break
     return x
-def fun_3(m, p):
+def fun_3(m, p):# выбрать из мамы и папы 
     c=[]
     for i in range(0,len(m)):
         random.seed()
-        individual = random.random()  #случайный родитель 
+        individual = random.random()#случайный родитель 
         if (individual<0.5):
             c.append(m[i])
         else:
@@ -120,6 +131,8 @@ def fun_4():
 #5 - Формирование новой популяции
 def fun_5():
     global pp
+    for i in range(0,len(pp)):
+        pp[i][1][0]=pp[i][1][0]*0.8
     r_pp=sorted(pp+newpp,key=lambda x: x[1])#Сортировка
     r_pp=r_pp[::-1]
     pp=r_pp[0:200]   
@@ -132,6 +145,7 @@ def fun_6(gen):
     global array
     array = []
     fun_1()
+    getY()
     for k in range(0,gen):
         fun_2()
         fun_4()
